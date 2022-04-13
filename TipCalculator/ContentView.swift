@@ -23,6 +23,7 @@ struct ContentView: View {
                 
                 TextField("Enter total", text: $total)
                     .textFieldStyle(.roundedBorder)
+                    .accessibilityIdentifier("totalTextField")
                 
                 Picker(selection: $tipPercentage) {
                     Text("10%").tag(0.1)
@@ -31,9 +32,9 @@ struct ContentView: View {
                 } label: {
                     EmptyView()
                 }.pickerStyle(.segmented)
-
+                    .accessibilityIdentifier("tipPercentageSegmentedControl")
                 
-                Button("Calculate Tip") {
+                Button(action: {
                     guard let total = Double(self.total) else { return }
                     do {
                         let result = try tipCalculator.calculate(
@@ -48,15 +49,21 @@ struct ContentView: View {
                     } catch {
                         message = error.localizedDescription
                     }
-                }.padding(.top, 20)
+                }, label: {
+                    Text("Calculate Tip")
+                        .padding(.top, 20)
+                        .accessibilityIdentifier("calculateTipButton")
+                })
                 
                 Text(message)
                     .padding(.top, 50)
+                    .accessibilityIdentifier("messageText")
                 
                 Spacer()
                 
                 Text(tip ?? "")
                     .font(.system(size: 54))
+                    .accessibilityIdentifier("tipText")
                 
                 Spacer()
                 .navigationTitle("Tip Calculator")
